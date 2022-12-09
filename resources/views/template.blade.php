@@ -13,6 +13,9 @@
 
 <body>
     <div class="container py-5">
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success mb-1" role="alert">{{ $message }}</div>
+        @endif
         <div class="card card-secondary">
             @yield('content')
         </div>

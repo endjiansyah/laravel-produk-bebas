@@ -51,7 +51,7 @@ class ProdukController extends Controller
             "foto" => $path
         ];
         produk::query()->create($isian);
-        return redirect()->back();
+        return redirect()->back()->with(['success' => 'Data Tersimpan']);;
     }
 
     /**
@@ -112,7 +112,7 @@ class ProdukController extends Controller
             ]);
         }
 
-        return redirect()->back();
+        return redirect()->back()->with(['success' => 'Data Tersimpan']);;
     }
 
     /**
@@ -127,6 +127,6 @@ class ProdukController extends Controller
         $foto = public_path($lokasifoto);
         unlink($foto);
         $produk->delete();
-        return redirect()->back();
+        return redirect()->back()->with(['success' => 'Data Tehapus']);;
     }
 }
