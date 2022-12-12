@@ -12,13 +12,39 @@
 </head>
 
 <body>
+    {{-- ------------ --}}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container">
+            <a class="navbar-brand" href="#">HILIH</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="d-flex justify-content-between w-100">
+
+
+                    <div class="navbar-nav">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        <a class="nav-link" href="/article">Article</a>
+                        <a class="nav-link" href="/produk">Produk</a>
+                    </div>
+                    <a href="#" class="btn btn-light">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    {{-- ------------- --}}
     <div class="container py-5">
         @if ($message = Session::get('success'))
             <div class="alert alert-success mb-1" role="alert">{{ $message }}</div>
         @endif
-        <div class="card card-secondary">
-            @yield('content')
-        </div>
+        @if ($message = Session::get('hapus'))
+            <div class="alert alert-danger mb-1" role="alert">{{ $message }}</div>
+        @endif
+
+        @yield('content')
+
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"

@@ -17,6 +17,12 @@ class ArticleController extends Controller
     {
         $articles = article::query()
             ->get();
+        return view("article.index", ["articles" => $articles]);
+    }
+    public function list()
+    {
+        $articles = article::query()
+            ->get();
         return view("article.list", ["articles" => $articles]);
     }
 
@@ -69,6 +75,10 @@ class ArticleController extends Controller
     {
         return view('article.edit', compact('article'));
     }
+    public function detail(article $article)
+    {
+        return view('article.detail', compact('article'));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -120,6 +130,6 @@ class ArticleController extends Controller
         $foto = public_path($lokasifoto);
         $article->delete();
         unlink($foto);
-        return redirect()->back()->with(['success' => 'Data Tehapus']);;
+        return redirect()->back()->with(['hapus' => 'Data Tehapus']);
     }
 }
