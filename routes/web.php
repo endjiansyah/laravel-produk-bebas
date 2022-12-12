@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,3 +19,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::resource('produk', ProdukController::class)->except(['show']);
+
+Route::resource('article', ArticleController::class);

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\produk;
+use App\Models\article;
 use Illuminate\Http\Request;
 use Symfony\Contracts\Service\Attribute\Required;
 
-class ProdukController extends Controller
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        $produks = produk::query()
+        $articles = article::query()
             ->get();
-        return view("produk.list", ["produks" => $produks]);
+        return view("article.list", ["articles" => $articles]);
     }
 
     /**
@@ -27,8 +27,8 @@ class ProdukController extends Controller
      */
     public function create()
     {
-        $produk = produk::all();
-        return view("produk.create", compact('produk'));
+        $article = article::all();
+        return view("article.create", compact('article'));
     }
 
     /**
@@ -39,77 +39,69 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        $file = $request->file("foto");
+        $file = $request->file("gambar");
         $filename = $file->hashName();
         $file->move("foto", $filename);
         $path = $request->getSchemeAndHttpHost() . "/foto/" . $filename;
         $isian = [
-            "nama" => $request->input('nama'),
-            "harga" => $request->input('harga'),
-            "stock" => $request->input('stock'),
-            "deskripsi" => $request->input('deskripsi'),
-            "foto" => $path
+            "title" => $request->input('title'),
+            "description" => $request->input('description'),
+            "gambar" => $path
         ];
-        produk::query()->create($isian);
+        article::query()->create($isian);
         return redirect()->back()->with(['success' => 'Data Tersimpan']);;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\produk  $produk
+     * @param  \App\Models\article  $article
      * @return \Illuminate\Http\Response
      */
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\produk  $produk
+     * @param  \App\Models\article  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit(produk $produk)
+    public function edit(article $article)
     {
-        return view('produk.edit', compact('produk'));
+        return view('article.edit', compact('article'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\produk  $produk
+     * @param  \App\Models\article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, produk $produk)
+    public function update(Request $request, article $article)
     {
         $this->validate($request, [
-            'nama' => 'Required',
-            'stock' => 'Required',
-            'harga' => 'Required',
+            'title' => 'Required',
             'foto' => 'file|image|mimes:jpg,jpeg,png'
         ]);
 
-        if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
             $filename = $file->hashName();
             $file->move('foto', $filename);
             $path = $request->getSchemeAndHttpHost() . '/foto/' . $filename;
-            $lokasifoto = str_replace($request->getSchemeAndHttpHost(), '', $produk->foto);
-            $foto = public_path($lokasifoto);
+            $lokasigambar = str_replace($request->getSchemeAndHttpHost(), '', $article->gambar);
+            $gambar = public_path($lokasigambar);
 
-            $produk->update([
-                "nama" => $request->input('nama'),
-                "harga" => $request->input('harga'),
-                "stock" => $request->input('stock'),
-                "deskripsi" => $request->input('deskripsi'),
-                "foto" => $path
+            $article->update([
+                "title" => $request->input('title'),
+                "description" => $request->input('description'),
+                "gambar" => $path
             ]);
-            unlink($foto);
+            unlink($gambar);
         } else {
-            $produk->update([
-                "nama" => $request->input('nama'),
-                "harga" => $request->input('harga'),
-                "stock" => $request->input('stock'),
-                "deskripsi" => $request->input('deskripsi')
+            $article->update([
+                "title" => $request->input('title'),
+                "description" => $request->input('description')
             ]);
         }
 
@@ -119,14 +111,14 @@ class ProdukController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\produk  $produk
+     * @param  \App\Models\article  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy(produk $produk, Request $request)
+    public function destroy(article $article, Request $request)
     {
-        $lokasifoto = str_replace($request->getSchemeAndHttpHost(), '', $produk->foto);
+        $lokasifoto = str_replace($request->getSchemeAndHttpHost(), '', $article->gambar);
         $foto = public_path($lokasifoto);
-        $produk->delete();
+        $article->delete();
         unlink($foto);
         return redirect()->back()->with(['success' => 'Data Tehapus']);;
     }
